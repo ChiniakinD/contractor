@@ -24,6 +24,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 import java.util.ArrayList;
 import java.util.List;
 
+import static org.apache.commons.lang3.StringUtils.isBlank;
+
+
 /**
  * Реализация сервиса для работы с контрагентами.
  *
@@ -55,17 +58,15 @@ public class ContractorServiceImpl implements ContractorService {
 
         sqlQuery.append("where 1=1");
 
-        if (contractorFilter.getCountryName() != null) {
+        if (!isBlank(contractorFilter.getCountryName())) {
             sqlQuery.append(" and id = ?");
             params.add(contractorFilter.getCountryName());
         }
-
-        if (contractorFilter.getIndustryName() != null) {
+        if (!isBlank(contractorFilter.getIndustryName())) {
             sqlQuery.append(" and id = ?");
             params.add(contractorFilter.getIndustryName());
         }
-
-        if (contractorFilter.getOrgFormName() != null) {
+        if (!isBlank(contractorFilter.getOrgFormName())) {
             sqlQuery.append(" and id = ?");
             params.add(contractorFilter.getOrgFormName());
         }
@@ -77,19 +78,19 @@ public class ContractorServiceImpl implements ContractorService {
             sqlQuery.append(" and parent_id = ?");
             params.add(contractorFilter.getParentId());
         }
-        if (contractorFilter.getName() != null) {
+        if (!isBlank(contractorFilter.getName())) {
             sqlQuery.append(" and name = ?");
             params.add(contractorFilter.getName());
         }
-        if (contractorFilter.getNameFull() != null) {
+        if (!isBlank(contractorFilter.getNameFull())) {
             sqlQuery.append(" and name_full = ?");
             params.add(contractorFilter.getNameFull());
         }
-        if (contractorFilter.getInn() != null) {
+        if (!isBlank(contractorFilter.getInn())) {
             sqlQuery.append(" and inn = ?");
             params.add(contractorFilter.getInn());
         }
-        if (contractorFilter.getOgrn() != null) {
+        if (!isBlank(contractorFilter.getOgrn())) {
             sqlQuery.append(" and ogrn = ?");
             params.add(contractorFilter.getOgrn());
         }
