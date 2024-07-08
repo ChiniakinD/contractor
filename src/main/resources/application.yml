@@ -1,0 +1,16 @@
+audit-log:
+  log-save: all # способ сохранения логов: `console`, `file` или `all` (по умолчанию `all`)
+  file-path: logs/spring-boot-application.log # путь к файлу для сохранения логов
+  enable: true # включить или отключить логирование
+
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost:5432/postgres
+    username: postgres
+    password: contractor
+    driver-class-name: org.postgresql.Driver
+
+  flyway:
+    enabled: true
+    validate-on-migrate: true
+
