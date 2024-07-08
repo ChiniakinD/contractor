@@ -10,7 +10,8 @@ spring:
     password: contractor
     driver-class-name: org.postgresql.Driver
 
-  flyway:
+  liquibase:
+    change-log: classpath:liquibase/db.changelog.yml
     enabled: true
-    validate-on-migrate: true
+
 
