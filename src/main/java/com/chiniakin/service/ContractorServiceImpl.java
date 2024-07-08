@@ -1,12 +1,10 @@
 package com.chiniakin.service;
 
+import com.chiniakin.config.mapper.ContractorRowMapper;
 import com.chiniakin.repository.ContractorRepository;
 import lombok.RequiredArgsConstructor;
 import com.chiniakin.config.mapper.ContractorMapper;
 import com.chiniakin.entity.Contractor;
-import com.chiniakin.entity.Country;
-import com.chiniakin.entity.Industry;
-import com.chiniakin.entity.OrgForm;
 import com.chiniakin.exception.ContractorNotFoundException;
 import com.chiniakin.model.ContractorModel;
 import com.chiniakin.model.ContractorFilter;
@@ -102,37 +100,7 @@ public class ContractorServiceImpl implements ContractorService {
         params.add(pageable.getPageSize());
         params.add(pageable.getOffset());
         try {
-            List<Contractor> contractors = jdbcTemplate.query(sqlQuery.toString(), params.toArray(), (rs, rowNum) -> {
-                Contractor contractor = new Contractor()
-                        .setId(rs.getString("id"))
-                        .setParentId(rs.getString("parent_id"))
-                        .setName(rs.getString("name"))
-                        .setNameFull(rs.getString("name_full"))
-                        .setInn(rs.getString("inn"))
-                        .setOgrn(rs.getString("ogrn"));
-
-                if (rs.getObject("country") != null) {
-                    Country country = new Country()
-                            .setId(rs.getString("country"))
-                            .setName(rs.getString("country_name"));
-                    contractor.setCountry(country);
-                }
-
-                if (rs.getString("industry") != null) {
-                    Industry industry = new Industry()
-                            .setId(rs.getLong("industry"))
-                            .setName(rs.getString("industry_name"));
-                    contractor.setIndustry(industry);
-                }
-
-                if (rs.getString("org_form") != null) {
-                    OrgForm orgForm = new OrgForm()
-                            .setId(rs.getLong("org_form"))
-                            .setName(rs.getString("org_form_name"));
-                    contractor.setOrgForm(orgForm);
-                }
-                return contractor;
-            });
+            List<Contractor> contractors = jdbcTemplate.query(sqlQuery.toString(), params.toArray(), new ContractorRowMapper());
             return new PageImpl<>(contractors.stream().map(contractorMapper::toModel).toList(), pageable, total);
         } catch (Exception e) {
             throw new ContractorNotFoundException(e.getMessage());
