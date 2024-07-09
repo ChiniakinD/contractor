@@ -1,5 +1,6 @@
 package com.chiniakin.controller;
 
+import com.chiniakin.TestBeans;
 import com.chiniakin.model.ContractorModel;
 import com.chiniakin.model.CountryResponse;
 import com.chiniakin.model.IndustryResponse;
@@ -10,7 +11,7 @@ import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
-import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -25,8 +26,8 @@ import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@WebMvcTest(ContractorController.class)
 @AutoConfigureMockMvc
+@SpringBootTest(classes = TestBeans.class)
 public class ContractorControllerTest {
 
     @Autowired
@@ -38,14 +39,14 @@ public class ContractorControllerTest {
     private ObjectMapper objectMapper = new ObjectMapper();
 
     @Test
-    void getAllContractorsReturnListOfCountries() throws Exception {
+    void getAllContractorsReturnListOfContractors() throws Exception {
         ContractorModel contractorModel = getContractorModel();
 
         Page<ContractorModel> contractorPage = new PageImpl<>(Collections.singletonList(contractorModel),
                 PageRequest.of(0, 1), 6);
 
         when(contractorService.search(0, 10)).thenReturn(contractorPage);
-        mockMvc.perform(MockMvcRequestBuilders.get("/contractors/search")
+        mockMvc.perform(MockMvcRequestBuilders.get("/contractors/all")
                         .contentType(MediaType.APPLICATION_JSON)
                         .param("page", "0")
                         .param("size", "10"))

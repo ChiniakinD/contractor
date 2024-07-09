@@ -1,11 +1,13 @@
 package com.chiniakin.controller;
 
+import com.chiniakin.TestBeans;
 import com.chiniakin.model.OrgFormModel;
 import com.chiniakin.service.interfaces.OrgFormService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
@@ -19,7 +21,8 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@WebMvcTest(OrgFormController.class)
+@AutoConfigureMockMvc
+@SpringBootTest(classes = TestBeans.class)
 public class OrgFormControllerTest {
 
     @Autowired
