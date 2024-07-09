@@ -35,7 +35,7 @@ public class ContractorController {
      * @param size размер страницы.
      * @return контрагентов.
      */
-    @GetMapping("/search")
+    @GetMapping("/all")
     public Page<ContractorModel> findAll(@RequestParam int page,
                                          @RequestParam int size) {
         return contractorService.search(page, size);
