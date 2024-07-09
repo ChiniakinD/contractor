@@ -1,3 +1,7 @@
+--liquibase formatted sql
+
+--changeset ChiniakinD:5
+--comment: insert initial list of industries
 INSERT INTO industry (id, "name")
 VALUES (1, 'Авиастроение'),
        (2, 'Автомобилестроение'),
@@ -105,6 +109,9 @@ VALUES (1, 'Авиастроение'),
        (103, 'Энергетика'),
        (104, 'Энергомашиностроение'),
        (105, 'Ювелирная промышленность');
+
+--changeset ChiniakinD:6
+--comment: insert initial list of org_forms
 INSERT INTO org_form (id, "name")
 VALUES (1, '-'),
        (2, 'Автономная некоммерческая организация'),
@@ -314,6 +321,9 @@ VALUES (1, '-'),
        (204, 'Хозяйственное товарищество'),
        (205, 'Частное учреждение'),
        (206, 'Экологический фонд');
+
+--changeset ChiniakinD:7
+--comment: insert initial list of countries
 INSERT INTO country (id, "name")
 VALUES ('ABH', 'Абхазия'),
        ('ABW', 'Аруба'),
@@ -570,6 +580,8 @@ VALUES ('ABH', 'Абхазия'),
        ('ZMB', 'Замбия'),
        ('ZWE', 'Зимбабве');
 
+--changeset ChiniakinD:8
+--comment: insert initial list of contractors
 INSERT INTO contractor (id, parent_id, name, name_full, inn, ogrn, country, industry, org_form, create_date,
                         modify_date, create_user_id, modify_user_id, is_active)
 VALUES ('1', '1', 'Рога и копыта', 'ООО Рога и копыта', '1234567890', '1234567890', 'ABH', 9, 3, NOW(), NOW(),

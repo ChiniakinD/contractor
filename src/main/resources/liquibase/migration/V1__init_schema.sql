@@ -1,3 +1,7 @@
+--liquibase formatted sql
+
+--changeset ChiniakinD:1
+--comment: create table country
 create table if not exists country
 (
     id        text primary key,
@@ -5,6 +9,8 @@ create table if not exists country
     is_active boolean not null default true
 );
 
+--changeset ChiniakinD:2
+--comment: create table industry
 create table if not exists industry
 (
     id        serial primary key,
@@ -12,6 +18,8 @@ create table if not exists industry
     is_active boolean not null default true
 );
 
+--changeset ChiniakinD:3
+--comment: create table org_form
 create table if not exists org_form
 (
     id        serial primary key,
@@ -19,6 +27,8 @@ create table if not exists org_form
     is_active boolean not null default true
 );
 
+--changeset ChiniakinD:4
+--comment: create table contractor
 create table if not exists contractor
 (
     id             varchar(12) primary key,
