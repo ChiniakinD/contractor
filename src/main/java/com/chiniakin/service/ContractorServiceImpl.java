@@ -24,7 +24,6 @@ import java.util.List;
 
 import static org.apache.commons.lang3.StringUtils.isBlank;
 
-
 /**
  * Реализация сервиса для работы с контрагентами.
  *
@@ -69,7 +68,7 @@ public class ContractorServiceImpl implements ContractorService {
             params.addValue("orgFormName", contractorFilter.getOrgFormName());
         }
         if (contractorFilter.getId() != null) {
-            sqlQuery.append(" and id = id");
+            sqlQuery.append(" and id = :id");
             params.addValue("id", contractorFilter.getId());
         }
         if (contractorFilter.getParentId() != null) {
@@ -77,11 +76,11 @@ public class ContractorServiceImpl implements ContractorService {
             params.addValue("parentId", contractorFilter.getParentId());
         }
         if (!isBlank(contractorFilter.getName())) {
-            sqlQuery.append(" and name = name");
+            sqlQuery.append(" and name = :name");
             params.addValue("name", contractorFilter.getName());
         }
         if (!isBlank(contractorFilter.getNameFull())) {
-            sqlQuery.append(" and name_full = nameFull");
+            sqlQuery.append(" and name_full = :nameFull");
             params.addValue("nameFull", contractorFilter.getNameFull());
         }
         if (!isBlank(contractorFilter.getInn())) {
