@@ -11,25 +11,25 @@ import java.sql.SQLException;
 
 /**
  * Обрабатывает отображения столбцов из БД в поля {@link Contractor}.
+ *
  * @author ChiniakinD
  */
 public class ContractorRowMapper implements RowMapper<Contractor> {
 
     /**
-     *
-     * @param rs ResulSet данные строки.
+     * @param rs     ResulSet данные строки.
      * @param rowNum номер строки.
      * @return объект Contractor из ResultSet.
      */
     public Contractor mapRow(ResultSet rs, int rowNum) throws SQLException {
-
-        Contractor contractor = new Contractor()
-                .setId(rs.getString("id"))
-                .setParentId(rs.getString("parent_id"))
-                .setName(rs.getString("name"))
-                .setNameFull(rs.getString("name_full"))
-                .setInn(rs.getString("inn"))
-                .setOgrn(rs.getString("ogrn"));
+        Contractor contractor = Contractor.builder()
+                .id("id")
+                .parentId("parent_id")
+                .name("name")
+                .nameFull("name_full")
+                .inn("inn")
+                .ogrn("ogrn")
+                .build();
 
         if (rs.getObject("country") != null) {
             Country country = new Country()

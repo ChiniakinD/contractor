@@ -6,9 +6,11 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.AllArgsConstructor;
 import lombok.experimental.Accessors;
 
 import java.util.Date;
@@ -21,8 +23,10 @@ import java.util.Date;
 @Getter
 @Setter
 @Entity
+@Builder
 @Accessors(chain = true)
 @NoArgsConstructor
+@AllArgsConstructor
 @Table(name = "contractor")
 public class Contractor {
 
