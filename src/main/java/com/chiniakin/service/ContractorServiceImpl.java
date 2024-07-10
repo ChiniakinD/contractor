@@ -131,9 +131,7 @@ public class ContractorServiceImpl implements ContractorService {
 
     @Override
     public void deleteContractorById(String id) {
-        Contractor contractor = contractorRepository.findByIdWithDetailsOrThrow(id);
-        contractor.setActive(false);
-        contractorRepository.save(contractor);
+        contractorRepository.offActiveById(id);
     }
 
 }

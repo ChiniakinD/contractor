@@ -65,9 +65,7 @@ public class IndustryServiceImpl implements IndustryService {
 
     @Override
     public void deleteIndustryById(Long id) {
-        Industry industry = industryRepository.findByIdOrThrow(id);
-        industry.setActive(false);
-        industryRepository.save(industry);
+        industryRepository.offActiveById(id);
     }
 
 }

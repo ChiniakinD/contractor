@@ -2,10 +2,12 @@ package com.chiniakin.repository;
 
 import com.chiniakin.entity.Contractor;
 import com.chiniakin.exception.ContractorNotFoundException;
+import jakarta.transaction.Transactional;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
@@ -44,7 +46,7 @@ public interface ContractorRepository extends JpaRepository<Contractor, String> 
     Optional<Contractor> findByIdWithDetails(@Param("id") String id);
 
     /**
-     * Поулчает контрагента по id, с информацией о стране, отрасли и  организационной формы.
+     * Получает контрагента по id, с информацией о стране, отрасли и  организационной формы.
      *
      * @param id идентификатор контрагента.
      * @return контрагент.
@@ -56,7 +58,7 @@ public interface ContractorRepository extends JpaRepository<Contractor, String> 
     }
 
     /**
-     * Поулчает контрагента по id.
+     * Получает контрагента по id.
      *
      * @param id идентификатор контрагента.
      * @return контрагент.
@@ -65,5 +67,15 @@ public interface ContractorRepository extends JpaRepository<Contractor, String> 
     default Contractor findByIdOrThrow(String id) {
         return findById(id).orElseThrow(() -> new ContractorNotFoundException("Контрагент с id " + id + " не найден."));
     }
+
+    /**
+     * Меняет поле isActive для фактического удаления из набора активных Contractor.
+     *
+     * @param id id идентификатор контрагента.
+     */
+    @Modifying
+    @Transactional
+    @Query("update Contractor c set c.isActive = false where c.id = :id")
+    void offActiveById(@Param("id") String id);
 
 }

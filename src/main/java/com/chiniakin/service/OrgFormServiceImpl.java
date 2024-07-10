@@ -65,9 +65,7 @@ public class OrgFormServiceImpl implements OrgFormService {
 
     @Override
     public void deleteOrgFormById(Long id) {
-        OrgForm orgForm = orgFormRepository.findByIdOrThrow(id);
-        orgForm.setActive(false);
-        orgFormRepository.save(orgForm);
+        orgFormRepository.offActiveById(id);
     }
 
 }

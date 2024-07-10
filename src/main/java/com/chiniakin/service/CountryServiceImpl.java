@@ -65,9 +65,7 @@ public class CountryServiceImpl implements CountryService {
 
     @Override
     public void deleteCountryById(String id) {
-        Country country = countryRepository.findByIdOrThrow(id);
-        country.setActive(false);
-        countryRepository.save(country);
+        countryRepository.offActiveById(id);
     }
 
 }
