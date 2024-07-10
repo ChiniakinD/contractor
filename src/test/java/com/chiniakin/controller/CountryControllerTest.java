@@ -12,8 +12,8 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
-import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.when;
@@ -35,16 +35,34 @@ public class CountryControllerTest {
 
     @Test
     public void getAllCountriesReturnListOfCountries() throws Exception {
-        List<CountryModel> countries = Arrays.asList(
+        List<CountryModel> countries = List.of(
                 new CountryModel("1", "Russia", true),
                 new CountryModel("2", "China", true)
         );
         when(countryService.getAllCountries()).thenReturn(countries);
-        mockMvc.perform(get("/countries/"))
+        mockMvc.perform(get("/countries/all"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$[0].id").value("1"))
                 .andExpect(jsonPath("$[0].name").value("Russia"))
                 .andExpect(jsonPath("$[1].id").value("2"))
+                .andExpect(jsonPath("$[1].name").value("China"));
+    }
+
+    @Test
+    public void getActiveCountriesReturnListOfActiveCountries() throws Exception {
+        List<CountryModel> countries = List.of(
+                new CountryModel("1", "Russia", true),
+                new CountryModel("2", "USA", false),
+                new CountryModel("3", "China", true)
+        );
+        when(countryService.getActiveCountries()).thenReturn(countries.stream()
+                .filter(CountryModel::isActive)
+                .collect(Collectors.toList()));
+        mockMvc.perform(get("/countries/"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$[0].id").value("1"))
+                .andExpect(jsonPath("$[0].name").value("Russia"))
+                .andExpect(jsonPath("$[1].id").value("3"))
                 .andExpect(jsonPath("$[1].name").value("China"));
     }
 

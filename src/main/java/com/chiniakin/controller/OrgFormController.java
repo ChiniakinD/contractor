@@ -28,9 +28,17 @@ public class OrgFormController {
     /**
      * @return список моделей всех форм организаций.
      */
-    @GetMapping("/")
+    @GetMapping("/all")
     public List<OrgFormModel> getOrgForms() {
         return orgFormService.getAllOrgForms();
+    }
+
+    /**
+     * @return список моделей всех форм организаций.
+     */
+    @GetMapping("/")
+    public List<OrgFormModel> getActiveOrgForms() {
+        return orgFormService.getActiveOrgForms();
     }
 
     /**

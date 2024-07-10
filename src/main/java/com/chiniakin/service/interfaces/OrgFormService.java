@@ -19,6 +19,13 @@ public interface OrgFormService {
     List<OrgFormModel> getAllOrgForms();
 
     /**
+     * Получает список всех активных форм организаций.
+     *
+     * @return список моделей всех активных форм организаций.
+     */
+    List<OrgFormModel> getActiveOrgForms();
+
+    /**
      * Получает форму организации. по ее id.
      *
      * @param id идентификатор формы организации.

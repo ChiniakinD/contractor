@@ -19,6 +19,13 @@ public interface IndustryService {
     List<IndustryModel> getAllIndustries();
 
     /**
+     * Получает список всех активных отраслей.
+     *
+     * @return список моделей всех активных отраслей.
+     */
+    List<IndustryModel> getActiveIndustries();
+
+    /**
      * Получает отрасль по ее id.
      *
      * @param id идентификатор отрасли.

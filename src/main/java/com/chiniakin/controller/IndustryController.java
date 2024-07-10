@@ -28,9 +28,17 @@ public class IndustryController {
     /**
      * @return список моделей всех отраслей.
      */
-    @GetMapping("/")
+    @GetMapping("/all")
     public List<IndustryModel> getAllIndustries() {
         return industryService.getAllIndustries();
+    }
+
+    /**
+     * @return список моделей всех активных отраслей.
+     */
+    @GetMapping("/")
+    public List<IndustryModel> getActiveIndustries() {
+        return industryService.getActiveIndustries();
     }
 
     /**

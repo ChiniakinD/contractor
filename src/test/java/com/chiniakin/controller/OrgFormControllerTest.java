@@ -12,8 +12,8 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
-import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.when;
@@ -35,17 +35,35 @@ public class OrgFormControllerTest {
 
     @Test
     public void getAllOrgFormShouldReturnListOfOrgForms() throws Exception {
-        List<OrgFormModel> orgFormList = Arrays.asList(
+        List<OrgFormModel> orgFormList = List.of(
                 new OrgFormModel(1L, "Адвокат", true),
                 new OrgFormModel(2L, "Нотариус", true)
         );
         when(orgFormService.getAllOrgForms()).thenReturn(orgFormList);
 
-        mockMvc.perform(get("/org-forms/"))
+        mockMvc.perform(get("/org-forms/all"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$[0].id").value("1"))
                 .andExpect(jsonPath("$[0].name").value("Адвокат"))
                 .andExpect(jsonPath("$[1].id").value("2"))
+                .andExpect(jsonPath("$[1].name").value("Нотариус"));
+    }
+
+    @Test
+    public void getActiveOrgFormShouldReturnListOfActiveOrgForms() throws Exception {
+        List<OrgFormModel> orgFormList = List.of(
+                new OrgFormModel(1L, "Адвокат", true),
+                new OrgFormModel(2L, "Пожарный", false),
+                new OrgFormModel(3L, "Нотариус", true)
+        );
+        when(orgFormService.getActiveOrgForms()).thenReturn(orgFormList.stream()
+                .filter(OrgFormModel::isActive)
+                .collect(Collectors.toList()));
+        mockMvc.perform(get("/org-forms/"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$[0].id").value("1"))
+                .andExpect(jsonPath("$[0].name").value("Адвокат"))
+                .andExpect(jsonPath("$[1].id").value("3"))
                 .andExpect(jsonPath("$[1].name").value("Нотариус"));
     }
 

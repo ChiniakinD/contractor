@@ -28,9 +28,17 @@ public class CountryController {
     /**
      * @return список моделей всех стран.
      */
-    @GetMapping("/")
+    @GetMapping("/all")
     public List<CountryModel> getAllCountries() {
         return countryService.getAllCountries();
+    }
+
+    /**
+     * @return список моделей всех активных стран.
+     */
+    @GetMapping("/")
+    public List<CountryModel> getAllActiveCountries() {
+        return countryService.getActiveCountries();
     }
 
     /**

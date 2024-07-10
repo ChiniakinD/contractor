@@ -12,8 +12,8 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
-import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.when;
@@ -35,16 +35,34 @@ public class IndustryControllerTest {
 
     @Test
     public void getAllIndustryShouldReturnListOfIndustries() throws Exception {
-        List<IndustryModel> industries = Arrays.asList(
+        List<IndustryModel> industries = List.of(
                 new IndustryModel(1L, "Воздушный транспорт", true),
                 new IndustryModel(2L, "Водный транспорт", true)
         );
         when(industryService.getAllIndustries()).thenReturn(industries);
-        mockMvc.perform(get("/industries/"))
+        mockMvc.perform(get("/industries/all"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$[0].id").value("1"))
                 .andExpect(jsonPath("$[0].name").value("Воздушный транспорт"))
                 .andExpect(jsonPath("$[1].id").value("2"))
+                .andExpect(jsonPath("$[1].name").value("Водный транспорт"));
+    }
+
+    @Test
+    public void getActiveIndustryShouldReturnListOfActiveIndustries() throws Exception {
+        List<IndustryModel> industries = List.of(
+                new IndustryModel(1L, "Воздушный транспорт", true),
+                new IndustryModel(2L, "Наземный транспорт", false),
+                new IndustryModel(3L, "Водный транспорт", true)
+        );
+        when(industryService.getActiveIndustries()).thenReturn(industries.stream()
+                .filter(IndustryModel::isActive)
+                .collect(Collectors.toList()));
+        mockMvc.perform(get("/industries/"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$[0].id").value("1"))
+                .andExpect(jsonPath("$[0].name").value("Воздушный транспорт"))
+                .andExpect(jsonPath("$[1].id").value("3"))
                 .andExpect(jsonPath("$[1].name").value("Водный транспорт"));
     }
 

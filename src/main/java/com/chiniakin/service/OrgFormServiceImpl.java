@@ -38,6 +38,15 @@ public class OrgFormServiceImpl implements OrgFormService {
     }
 
     @Override
+    public List<OrgFormModel> getActiveOrgForms() {
+        return orgFormRepository.findAll()
+                .stream()
+                .filter(OrgForm::isActive)
+                .map(orgForm -> mapper.map(orgForm, OrgFormModel.class))
+                .collect(Collectors.toList());
+    }
+
+    @Override
     public OrgFormModel getOrgFormById(Long id) {
         return mapper.map(orgFormRepository.findByIdOrThrow(id), OrgFormModel.class);
     }

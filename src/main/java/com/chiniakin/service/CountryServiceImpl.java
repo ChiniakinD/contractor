@@ -29,6 +29,7 @@ public class CountryServiceImpl implements CountryService {
     @Qualifier("mergeMapper")
     private ModelMapper mergeMapper; // использовать в update
 
+    @Override
     public List<CountryModel> getAllCountries() {
         return countryRepository.findAll()
                 .stream()
@@ -36,10 +37,21 @@ public class CountryServiceImpl implements CountryService {
                 .collect(Collectors.toList());
     }
 
+    @Override
+    public List<CountryModel> getActiveCountries() {
+        return countryRepository.findAll()
+                .stream()
+                .filter(Country::isActive)
+                .map(country -> mapper.map(country, CountryModel.class))
+                .collect(Collectors.toList());
+    }
+
+    @Override
     public CountryModel getCountryById(String id) {
         return mapper.map(countryRepository.findByIdOrThrow(id), CountryModel.class);
     }
 
+    @Override
     public void updateCountry(String id, CountryModel countryModel) {
         Country country = countryRepository.findById(id)
                 .orElseGet(() -> {
@@ -51,6 +63,7 @@ public class CountryServiceImpl implements CountryService {
         countryRepository.save(country);
     }
 
+    @Override
     public void deleteCountryById(String id) {
         Country country = countryRepository.findByIdOrThrow(id);
         country.setActive(false);

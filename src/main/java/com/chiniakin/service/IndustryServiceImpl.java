@@ -32,7 +32,17 @@ public class IndustryServiceImpl implements IndustryService {
     @Override
     public List<IndustryModel> getAllIndustries() {
         return industryRepository.findAll()
-                .stream().map(industry -> mapper.map(industry, IndustryModel.class))
+                .stream()
+                .map(industry -> mapper.map(industry, IndustryModel.class))
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public List<IndustryModel> getActiveIndustries() {
+        return industryRepository.findAll()
+                .stream()
+                .filter(Industry::isActive)
+                .map(industry -> mapper.map(industry, IndustryModel.class))
                 .collect(Collectors.toList());
     }
 

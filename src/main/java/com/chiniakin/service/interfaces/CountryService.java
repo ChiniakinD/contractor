@@ -19,6 +19,13 @@ public interface CountryService {
     List<CountryModel> getAllCountries();
 
     /**
+     * Получает список всех активных стран.
+     *
+     * @return список моделей всех активных стран.
+     */
+    List<CountryModel> getActiveCountries();
+
+    /**
      * Получает страну по ее id.
      *
      * @param id идентификатор страны.
