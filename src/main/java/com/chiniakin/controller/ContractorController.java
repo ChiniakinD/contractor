@@ -13,7 +13,15 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
 
 /**
  * Контроллер для работы с контрагентами.
@@ -23,7 +31,7 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/contractors")
-@Tag(name = "ContractorService", description = "Контроллер для работы с контрагентами")
+@Tag(name = "ContractorController", description = "Контроллер для работы с контрагентами")
 public class ContractorController {
 
     private final ContractorService contractorService;
@@ -120,7 +128,7 @@ public class ContractorController {
      *
      * @param contractorModel модель контрагента.
      */
-    @Operation(summary = "Сохранение страны", description = "Добавляет нового контрагента или обновляет уже существующую")
+    @Operation(summary = "Сохранение контрагента", description = "Добавляет нового контрагента или обновляет уже существующую")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Контрагент добавлен или обновлен")
     })
