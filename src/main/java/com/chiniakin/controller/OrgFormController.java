@@ -1,5 +1,13 @@
 package com.chiniakin.controller;
 
+import com.chiniakin.model.CountryModel;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import com.chiniakin.model.OrgFormModel;
 import com.chiniakin.service.interfaces.OrgFormService;
@@ -21,6 +29,7 @@ import java.util.List;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/org-forms")
+@Tag(name = "OrgFormController", description = "Контроллер для работы с формами организаций")
 public class OrgFormController {
 
     private final OrgFormService orgFormService;
@@ -28,6 +37,14 @@ public class OrgFormController {
     /**
      * @return список моделей всех форм организаций.
      */
+    @Operation(summary = "Получает список всех форм организаций", description = "Позволяет получить список всех форм организаций")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Ok",
+                    content = @Content(
+                            schema = @Schema(implementation = OrgFormController.class)
+                    )
+            )
+    })
     @GetMapping("/all")
     public List<OrgFormModel> getOrgForms() {
         return orgFormService.getAllOrgForms();
@@ -36,6 +53,15 @@ public class OrgFormController {
     /**
      * @return список моделей всех форм организаций.
      */
+    @Operation(summary = "Получает список всех активных форм организаций", description = "Позволяет получить список всех активных форм организаций")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Ok",
+                    content = {
+                            @Content(
+                                    schema = @Schema(implementation = OrgFormController.class)
+                            )
+                    })
+    })
     @GetMapping("/")
     public List<OrgFormModel> getActiveOrgForms() {
         return orgFormService.getActiveOrgForms();
@@ -47,8 +73,19 @@ public class OrgFormController {
      * @param id идентификатор формы организации.
      * @return модель формы организации.
      */
+    @Operation(summary = "Получение формы организации по id", description = "Получение информации о форме организации по id")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Ok",
+                    content = {
+                            @Content(
+                                    schema = @Schema(implementation = CountryModel.class)
+                            )
+                    }),
+            @ApiResponse(responseCode = "404", description = "Форма организации с таким id не найдена")
+    })
     @GetMapping("/get/{id}")
-    public OrgFormModel getOrgFormById(@PathVariable Long id) {
+    public OrgFormModel getOrgFormById(@Parameter(description = "id формы организации")
+                                       @PathVariable Long id) {
         return orgFormService.getOrgFormById(id);
     }
 
@@ -58,8 +95,13 @@ public class OrgFormController {
      * @param id           идентификатор формы организации.
      * @param orgFormModel модель формы организации.
      */
+    @Operation(summary = "Сохранение формы организации", description = "Добавляет новую форму организации или обновляет уже существующую")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Форма организации добавлена или обновлена")
+    })
     @PutMapping("/add/{id}")
-    public void addOrgForm(@PathVariable Long id, @RequestBody OrgFormModel orgFormModel) {
+    public void addOrgForm(@Parameter(description = "id формы организации")
+                           @PathVariable Long id, @RequestBody OrgFormModel orgFormModel) {
         orgFormService.updateOrgForm(id, orgFormModel);
     }
 
@@ -68,8 +110,13 @@ public class OrgFormController {
      *
      * @param id идентификатор формы организации.
      */
+    @Operation(summary = "Удаление формы организации по id")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Форма организации успешно удалена по id")
+    })
     @DeleteMapping("/delete/{id}")
-    public void deleteOrgForm(@PathVariable Long id) {
+    public void deleteOrgForm(@Parameter(description = "id формы организации")
+                              @PathVariable Long id) {
         orgFormService.deleteOrgFormById(id);
     }
 
