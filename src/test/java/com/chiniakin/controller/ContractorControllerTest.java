@@ -79,6 +79,16 @@ public class ContractorControllerTest {
     }
 
     @Test
+    void setMainBorrowerShouldUpdateMeaning() throws Exception {
+        mockMvc.perform(MockMvcRequestBuilders.patch("/contractors/main-borrower/{id}", "1")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(true)))
+                .andExpect(status().isOk());
+
+        Mockito.verify(contractorService).setMainBorrower("1", true);
+    }
+
+    @Test
     void deleteContractorShouldSuccessfulDeleteContractor() throws Exception {
         mockMvc.perform(MockMvcRequestBuilders.delete("/contractors/delete/{id}", "1"))
                 .andExpect(status().isOk());
