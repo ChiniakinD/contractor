@@ -62,12 +62,19 @@ public class Contractor {
 
     @Column(name = "create_date")
     private Date createDate;
+
     @Column(name = "modify_date")
     private Date modifyDate;
+
     @Column(name = "create_user_id")
     private String createUserId;
+
     @Column(name = "modify_user_id")
     private String modifyUserId;
+
+    @Column(name = "active_main_borrower")
+    private boolean activeMainBorrower;
+
     @Column(name = "is_active")
     private boolean isActive = true;
 

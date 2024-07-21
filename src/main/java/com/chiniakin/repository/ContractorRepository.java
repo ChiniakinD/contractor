@@ -69,9 +69,20 @@ public interface ContractorRepository extends JpaRepository<Contractor, String> 
     }
 
     /**
+     * Меняет значение поля activeMainBorrower.
+     *
+     * @param id идентификатор контрагента.
+     * @param activeMainBorrower статус основного заемщика.
+     */
+    @Modifying
+    @Transactional
+    @Query("update Contractor c set c.activeMainBorrower = :activeMainBorrower where c.id = :id")
+    void setActiveMainBorrower(@Param("id") String id, @Param("activeMainBorrower") boolean activeMainBorrower);
+
+    /**
      * Меняет поле isActive для фактического удаления из набора активных Contractor.
      *
-     * @param id id идентификатор контрагента.
+     * @param id идентификатор контрагента.
      */
     @Modifying
     @Transactional

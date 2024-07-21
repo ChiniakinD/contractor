@@ -61,4 +61,12 @@ public interface ContractorService {
      */
     void saveContractor(ContractorModel contractorModel);
 
+    /**
+     * Изменение значения поля activeMainBorrower у контрагента.
+     *
+     * @param contractorId id контрагента.
+     * @param activeMainBorrower новое значение поля activeMainBorrower.
+     */
+    void setMainBorrower(String contractorId, boolean activeMainBorrower);
+
 }
