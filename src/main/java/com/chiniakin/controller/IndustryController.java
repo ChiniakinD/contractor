@@ -10,6 +10,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import com.chiniakin.model.IndustryModel;
 import com.chiniakin.service.interfaces.IndustryService;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -44,6 +45,7 @@ public class IndustryController {
                     })
     })
     @GetMapping("/all")
+    @PreAuthorize("hasAnyAuthority('USER', 'CONTRACTOR_RUS', 'CONTRACTOR_SUPERUSER', 'SUPERUSER')")
     public List<IndustryModel> getAllIndustries() {
         return industryService.getAllIndustries();
     }
@@ -63,6 +65,7 @@ public class IndustryController {
 
     })
     @GetMapping("/")
+    @PreAuthorize("hasAnyAuthority('USER', 'CONTRACTOR_RUS', 'CONTRACTOR_SUPERUSER', 'SUPERUSER')")
     public List<IndustryModel> getActiveIndustries() {
         return industryService.getActiveIndustries();
     }
@@ -73,11 +76,12 @@ public class IndustryController {
      * @param id идентификатор отрасли.
      * @return модель отрасли.
      */
-    @Operation(summary = "Сохранение отрасли", description = "Добавляет новую отрасль или обновляет уже существующую")
+    @Operation(summary = "Получение отрасли по id", description = "Получает отрасль по id")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Отрасль добавлена или обновлена")
+            @ApiResponse(responseCode = "200", description = "Отрасль получена")
     })
     @GetMapping("/get/{id}")
+    @PreAuthorize("hasAnyAuthority('USER', 'CONTRACTOR_RUS', 'CONTRACTOR_SUPERUSER', 'SUPERUSER')")
     public IndustryModel getIndustryById(@Parameter(description = "id отрасли")
                                          @PathVariable Long id) {
         return industryService.getIndustryById(id);
@@ -94,6 +98,7 @@ public class IndustryController {
             @ApiResponse(responseCode = "200", description = "Отрасль добавлена или обновлена")
     })
     @PutMapping("/add/{id}")
+    @PreAuthorize("hasAnyAuthority('CONTRACTOR_SUPERUSER', 'SUPERUSER')")
     public void updateIndustry(@Parameter(description = "id отрасли")
                                @PathVariable Long id, @RequestBody IndustryModel industryModel) {
         industryService.updateIndustry(id, industryModel);
@@ -109,6 +114,7 @@ public class IndustryController {
             @ApiResponse(responseCode = "200", description = "Отрасль успешно удалена по id")
     })
     @DeleteMapping("/delete/{id}")
+    @PreAuthorize("hasAnyAuthority('CONTRACTOR_SUPERUSER', 'SUPERUSER')")
     public void deleteIndustry(@Parameter(description = "id отрасли")
                                @PathVariable Long id) {
         industryService.deleteIndustryById(id);
