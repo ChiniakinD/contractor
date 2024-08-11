@@ -46,7 +46,8 @@ public class CountryController {
                     }),
     })
     @GetMapping("/all")
-    @PreAuthorize("hasAnyAuthority('USER', 'CONTRACTOR_RUS', 'CONTRACTOR_SUPERUSER', 'SUPERUSER')")
+    @PreAuthorize("hasAnyAuthority(T(com.chiniakin.enums.auth.RoleEnum).USER, T(com.chiniakin.enums.auth.RoleEnum).CONTRACTOR_RUS," +
+            "T(com.chiniakin.enums.auth.RoleEnum).CONTRACTOR_SUPERUSER, T(com.chiniakin.enums.auth.RoleEnum).SUPERUSER)")
     public List<CountryModel> getAllCountries() {
         return countryService.getAllCountries();
     }
@@ -65,7 +66,8 @@ public class CountryController {
                     })
     })
     @GetMapping("/")
-    @PreAuthorize("hasAnyAuthority('USER', 'CONTRACTOR_RUS', 'CONTRACTOR_SUPERUSER', 'SUPERUSER')")
+    @PreAuthorize("hasAnyAuthority(T(com.chiniakin.enums.auth.RoleEnum).USER, T(com.chiniakin.enums.auth.RoleEnum).CONTRACTOR_RUS," +
+            "T(com.chiniakin.enums.auth.RoleEnum).CONTRACTOR_SUPERUSER, T(com.chiniakin.enums.auth.RoleEnum).SUPERUSER)")
     public List<CountryModel> getAllActiveCountries() {
         return countryService.getActiveCountries();
     }
@@ -88,7 +90,8 @@ public class CountryController {
             @ApiResponse(responseCode = "404", description = "Страна с таким id не найдена")
     })
     @GetMapping("/get/{id}")
-    @PreAuthorize("hasAnyAuthority('USER', 'CONTRACTOR_RUS', 'CONTRACTOR_SUPERUSER', 'SUPERUSER')")
+    @PreAuthorize("hasAnyAuthority(T(com.chiniakin.enums.auth.RoleEnum).USER, T(com.chiniakin.enums.auth.RoleEnum).CONTRACTOR_RUS," +
+            "T(com.chiniakin.enums.auth.RoleEnum).CONTRACTOR_SUPERUSER, T(com.chiniakin.enums.auth.RoleEnum).SUPERUSER)")
     public CountryModel getCountryById(@Parameter(description = "id страны")
                                        @PathVariable("id") String id) {
         return countryService.getCountryById(id);
@@ -105,7 +108,7 @@ public class CountryController {
             @ApiResponse(responseCode = "200", description = "Страна добавлена или обновлена")
     })
     @PutMapping("/add/{id}")
-    @PreAuthorize("hasAnyAuthority('CONTRACTOR_SUPERUSER', 'SUPERUSER')")
+    @PreAuthorize("hasAnyAuthority(T(com.chiniakin.enums.auth.RoleEnum).CONTRACTOR_SUPERUSER, T(com.chiniakin.enums.auth.RoleEnum).SUPERUSER)")
     public void updateCountry(@Parameter(description = "id страны")
                               @PathVariable("id") String id,
                               @RequestBody CountryModel countryModel) {

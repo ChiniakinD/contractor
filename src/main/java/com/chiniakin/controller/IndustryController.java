@@ -45,7 +45,8 @@ public class IndustryController {
                     })
     })
     @GetMapping("/all")
-    @PreAuthorize("hasAnyAuthority('USER', 'CONTRACTOR_RUS', 'CONTRACTOR_SUPERUSER', 'SUPERUSER')")
+    @PreAuthorize("hasAnyAuthority(T(com.chiniakin.enums.auth.RoleEnum).USER, T(com.chiniakin.enums.auth.RoleEnum).CONTRACTOR_RUS," +
+            "T(com.chiniakin.enums.auth.RoleEnum).CONTRACTOR_SUPERUSER, T(com.chiniakin.enums.auth.RoleEnum).SUPERUSER)")
     public List<IndustryModel> getAllIndustries() {
         return industryService.getAllIndustries();
     }

@@ -47,7 +47,8 @@ public class OrgFormController {
             )
     })
     @GetMapping("/all")
-    @PreAuthorize("hasAnyAuthority('USER', 'CONTRACTOR_RUS', 'CONTRACTOR_SUPERUSER', 'SUPERUSER')")
+    @PreAuthorize("hasAnyAuthority(T(com.chiniakin.enums.auth.RoleEnum).USER, T(com.chiniakin.enums.auth.RoleEnum).CONTRACTOR_RUS," +
+            "T(com.chiniakin.enums.auth.RoleEnum).CONTRACTOR_SUPERUSER, T(com.chiniakin.enums.auth.RoleEnum).SUPERUSER)")
     public List<OrgFormModel> getOrgForms() {
         return orgFormService.getAllOrgForms();
     }
@@ -65,7 +66,8 @@ public class OrgFormController {
                     })
     })
     @GetMapping("/")
-    @PreAuthorize("hasAnyAuthority('USER', 'CONTRACTOR_RUS', 'CONTRACTOR_SUPERUSER', 'SUPERUSER')")
+    @PreAuthorize("hasAnyAuthority(T(com.chiniakin.enums.auth.RoleEnum).USER, T(com.chiniakin.enums.auth.RoleEnum).CONTRACTOR_RUS," +
+            "T(com.chiniakin.enums.auth.RoleEnum).CONTRACTOR_SUPERUSER, T(com.chiniakin.enums.auth.RoleEnum).SUPERUSER)")
     public List<OrgFormModel> getActiveOrgForms() {
         return orgFormService.getActiveOrgForms();
     }
@@ -87,7 +89,8 @@ public class OrgFormController {
             @ApiResponse(responseCode = "404", description = "Форма организации с таким id не найдена")
     })
     @GetMapping("/get/{id}")
-    @PreAuthorize("hasAnyAuthority('USER', 'CONTRACTOR_RUS', 'CONTRACTOR_SUPERUSER', 'SUPERUSER')")
+    @PreAuthorize("hasAnyAuthority(T(com.chiniakin.enums.auth.RoleEnum).USER, T(com.chiniakin.enums.auth.RoleEnum).CONTRACTOR_RUS," +
+            "T(com.chiniakin.enums.auth.RoleEnum).CONTRACTOR_SUPERUSER, T(com.chiniakin.enums.auth.RoleEnum).SUPERUSER)")
     public OrgFormModel getOrgFormById(@Parameter(description = "id формы организации")
                                        @PathVariable Long id) {
         return orgFormService.getOrgFormById(id);
@@ -104,7 +107,7 @@ public class OrgFormController {
             @ApiResponse(responseCode = "200", description = "Форма организации добавлена или обновлена")
     })
     @PutMapping("/add/{id}")
-    @PreAuthorize("hasAnyAuthority('CONTRACTOR_SUPERUSER', 'SUPERUSER')")
+    @PreAuthorize("hasAnyAuthority(T(com.chiniakin.enums.auth.RoleEnum).CONTRACTOR_SUPERUSER, T(com.chiniakin.enums.auth.RoleEnum).SUPERUSER)")
     public void addOrgForm(@Parameter(description = "id формы организации")
                            @PathVariable Long id, @RequestBody OrgFormModel orgFormModel) {
         orgFormService.updateOrgForm(id, orgFormModel);
@@ -120,7 +123,7 @@ public class OrgFormController {
             @ApiResponse(responseCode = "200", description = "Форма организации успешно удалена по id")
     })
     @DeleteMapping("/delete/{id}")
-    @PreAuthorize("hasAnyAuthority('CONTRACTOR_SUPERUSER', 'SUPERUSER')")
+    @PreAuthorize("hasAnyAuthority(T(com.chiniakin.enums.auth.RoleEnum).CONTRACTOR_SUPERUSER, T(com.chiniakin.enums.auth.RoleEnum).SUPERUSER)")
     public void deleteOrgForm(@Parameter(description = "id формы организации")
                               @PathVariable Long id) {
         orgFormService.deleteOrgFormById(id);
