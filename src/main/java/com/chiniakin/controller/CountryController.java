@@ -10,6 +10,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -45,6 +46,8 @@ public class CountryController {
                     }),
     })
     @GetMapping("/all")
+    @PreAuthorize("hasAnyAuthority(T(com.chiniakin.enums.auth.RoleEnum).USER, T(com.chiniakin.enums.auth.RoleEnum).CONTRACTOR_RUS," +
+            "T(com.chiniakin.enums.auth.RoleEnum).CONTRACTOR_SUPERUSER, T(com.chiniakin.enums.auth.RoleEnum).SUPERUSER)")
     public List<CountryModel> getAllCountries() {
         return countryService.getAllCountries();
     }
@@ -63,6 +66,8 @@ public class CountryController {
                     })
     })
     @GetMapping("/")
+    @PreAuthorize("hasAnyAuthority(T(com.chiniakin.enums.auth.RoleEnum).USER, T(com.chiniakin.enums.auth.RoleEnum).CONTRACTOR_RUS," +
+            "T(com.chiniakin.enums.auth.RoleEnum).CONTRACTOR_SUPERUSER, T(com.chiniakin.enums.auth.RoleEnum).SUPERUSER)")
     public List<CountryModel> getAllActiveCountries() {
         return countryService.getActiveCountries();
     }
@@ -85,6 +90,8 @@ public class CountryController {
             @ApiResponse(responseCode = "404", description = "Страна с таким id не найдена")
     })
     @GetMapping("/get/{id}")
+    @PreAuthorize("hasAnyAuthority(T(com.chiniakin.enums.auth.RoleEnum).USER, T(com.chiniakin.enums.auth.RoleEnum).CONTRACTOR_RUS," +
+            "T(com.chiniakin.enums.auth.RoleEnum).CONTRACTOR_SUPERUSER, T(com.chiniakin.enums.auth.RoleEnum).SUPERUSER)")
     public CountryModel getCountryById(@Parameter(description = "id страны")
                                        @PathVariable("id") String id) {
         return countryService.getCountryById(id);
@@ -101,6 +108,7 @@ public class CountryController {
             @ApiResponse(responseCode = "200", description = "Страна добавлена или обновлена")
     })
     @PutMapping("/add/{id}")
+    @PreAuthorize("hasAnyAuthority(T(com.chiniakin.enums.auth.RoleEnum).CONTRACTOR_SUPERUSER, T(com.chiniakin.enums.auth.RoleEnum).SUPERUSER)")
     public void updateCountry(@Parameter(description = "id страны")
                               @PathVariable("id") String id,
                               @RequestBody CountryModel countryModel) {
@@ -117,6 +125,7 @@ public class CountryController {
             @ApiResponse(responseCode = "200", description = "Страна успешно удалена по id")
     })
     @DeleteMapping("/delete/{id}")
+    @PreAuthorize("hasAnyAuthority('CONTRACTOR_SUPERUSER', 'SUPERUSER')")
     public void deleteCountry(@Parameter(description = "id страны")
                               @PathVariable("id") String id) {
         countryService.deleteCountryById(id);

@@ -8,6 +8,8 @@ import com.chiniakin.entity.OrgForm;
 import com.chiniakin.model.ContractorFilter;
 import org.springframework.data.jpa.domain.Specification;
 
+import java.util.Set;
+
 /**
  * Класс для создания спецификаций для Contractor на основе фильтра.
  *
@@ -24,14 +26,14 @@ public final class ContractorServiceSpecification {
      * @param contractorFilter фильтр для поиска контрагентов.
      * @return спецификация для Contractor .
      */
-    public static Specification<Contractor> buildSpecification(ContractorFilter contractorFilter) {
+    public static Specification<Contractor> buildSpecification(ContractorFilter contractorFilter, Set<String> roles) {
         return Specification.where(byId(contractorFilter.getId()))
                 .and(byParentId(contractorFilter.getParentId()))
                 .and(byName(contractorFilter.getName()))
                 .and(byNameFull(contractorFilter.getNameFull()))
                 .and(byInn(contractorFilter.getInn()))
                 .and(byOgrn(contractorFilter.getOgrn()))
-                .and(byCountryName(contractorFilter.getCountryName()))
+                .and(byCountryName(contractorFilter.getCountryName(), roles))
                 .and(byIndustryName(contractorFilter.getIndustryName()))
                 .and(byOrgFormName(contractorFilter.getOrgFormName()));
     }
@@ -90,12 +92,26 @@ public final class ContractorServiceSpecification {
         };
     }
 
-    private static Specification<Contractor> byCountryName(String countryName) {
+    private static Specification<Contractor> byCountryName(String countryName, Set<String> roles) {
         return (root, query, criteriaBuilder) -> {
+
             if (countryName == null) {
+                if (!roles.contains("CONTRACTOR_SUPERUSER") || !roles.contains("SUPERUSER")) {
+                    if (roles.contains("CONTRACTOR_RUS")) {
+                        return criteriaBuilder.equal(root.get("id"), "RUS");
+                    }
+                }
                 return criteriaBuilder.conjunction();
             }
             Join<Contractor, Country> contractorCountry = root.join("country");
+            if (!roles.contains("CONTRACTOR_SUPERUSER") || !roles.contains("SUPERUSER")) {
+                if (roles.contains("CONTRACTOR_RUS")) {
+                    return criteriaBuilder.and(
+                            criteriaBuilder.equal(root.get("id"), "RUS"),
+                            criteriaBuilder.like(contractorCountry.get("name"), "%" + countryName + "%")
+                    );
+                }
+            }
             return criteriaBuilder.like(contractorCountry.get("name"), "%" + countryName + "%");
         };
     }

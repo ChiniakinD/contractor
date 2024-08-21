@@ -9,6 +9,7 @@ import com.chiniakin.model.ContractorModel;
 import com.chiniakin.repository.ContractorRepository;
 import com.chiniakin.service.interfaces.ContractorService;
 import com.chiniakin.specification.ContractorServiceSpecification;
+import com.chiniakin.util.auth.SecurityUtil;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Page;
@@ -40,7 +41,8 @@ public class ContractorServiceImpl implements ContractorService {
 
     @Override
     public Page<ContractorModel> searchWithFilters(ContractorFilter contractorFilter, Pageable pageable) {
-        Page<Contractor> contractors = contractorRepository.findAll(ContractorServiceSpecification.buildSpecification(contractorFilter), pageable);
+        Page<Contractor> contractors = contractorRepository.findAll(ContractorServiceSpecification
+                .buildSpecification(contractorFilter, SecurityUtil.getUserRoles()), pageable);
         return contractors.map(contractorMapper::toModel);
     }
 
