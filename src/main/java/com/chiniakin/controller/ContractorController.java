@@ -13,6 +13,9 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
@@ -55,6 +58,8 @@ public class ContractorController {
                     })
     })
     @GetMapping("/all")
+    @PreAuthorize("hasAnyAuthority(T(com.chiniakin.enums.auth.RoleEnum).USER, T(com.chiniakin.enums.auth.RoleEnum).CONTRACTOR_RUS," +
+            "T(com.chiniakin.enums.auth.RoleEnum).CONTRACTOR_SUPERUSER, T(com.chiniakin.enums.auth.RoleEnum).SUPERUSER)")
     public Page<ContractorModel> findAll(@RequestParam int page,
                                          @RequestParam int size) {
         return contractorService.search(page, size);
@@ -77,6 +82,8 @@ public class ContractorController {
                     })
     })
     @PostMapping("/search")
+    @PreAuthorize("hasAnyAuthority(T(com.chiniakin.enums.auth.RoleEnum).CONTRACTOR_RUS, T(com.chiniakin.enums.auth.RoleEnum).CONTRACTOR_SUPERUSER," +
+            " T(com.chiniakin.enums.auth.RoleEnum).SUPERUSER)")
     public Page<ContractorModel> searchContractors(@RequestBody ContractorFilter contractorFilter, Pageable pageable) {
         return contractorService.searchWithFilters(contractorFilter, pageable);
     }
@@ -99,12 +106,14 @@ public class ContractorController {
                     })
     })
     @PostMapping("/native/search")
+    @PreAuthorize("hasAnyAuthority(T(com.chiniakin.enums.auth.RoleEnum).CONTRACTOR_RUS, T(com.chiniakin.enums.auth.RoleEnum).CONTRACTOR_SUPERUSER," +
+            " T(com.chiniakin.enums.auth.RoleEnum).SUPERUSER)")
     public Page<ContractorModel> searchNativeContractors(@RequestBody ContractorFilter contractorFilter, Pageable pageable) {
         return contractorService.searchWithNativeFilters(contractorFilter, pageable);
     }
 
     /**
-     * Получет контрагента по его id.
+     * Получает контрагента по его id.
      *
      * @param id идентификатор контрагента.
      * @return модель контрагента.
@@ -120,6 +129,8 @@ public class ContractorController {
             @ApiResponse(responseCode = "404", description = "Контрагент с таким id не найдена")
     })
     @GetMapping("/get/{id}")
+    @PreAuthorize("hasAnyAuthority(T(com.chiniakin.enums.auth.RoleEnum).USER, T(com.chiniakin.enums.auth.RoleEnum).CONTRACTOR_RUS," +
+            "T(com.chiniakin.enums.auth.RoleEnum).CONTRACTOR_SUPERUSER, T(com.chiniakin.enums.auth.RoleEnum).SUPERUSER)")
     public ContractorModel getContractorById(@Parameter(description = "id контрагента")
                                              @PathVariable String id) {
         return contractorService.getContractorById(id);
@@ -135,6 +146,7 @@ public class ContractorController {
             @ApiResponse(responseCode = "200", description = "Контрагент добавлен или обновлен")
     })
     @PutMapping("/save")
+    @PreAuthorize("hasAnyAuthority(T(com.chiniakin.enums.auth.RoleEnum).CONTRACTOR_SUPERUSER, T(com.chiniakin.enums.auth.RoleEnum).SUPERUSER)")
     public void saveContractor(@RequestBody ContractorModel contractorModel) {
         contractorService.saveContractor(contractorModel);
     }
@@ -164,6 +176,7 @@ public class ContractorController {
             @ApiResponse(responseCode = "200", description = "Контрагент успешно удален по id")
     })
     @DeleteMapping("/delete/{id}")
+    @PreAuthorize("hasAnyAuthority(T(com.chiniakin.enums.auth.RoleEnum).CONTRACTOR_SUPERUSER, T(com.chiniakin.enums.auth.RoleEnum).SUPERUSER)")
     public void deleteContractorById(@Parameter(description = "id контрагента")
                                      @PathVariable String id) {
         contractorService.deleteContractorById(id);

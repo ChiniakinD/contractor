@@ -7,6 +7,7 @@ import com.chiniakin.model.IndustryResponse;
 import com.chiniakin.model.OrgFormResponse;
 import com.chiniakin.service.interfaces.ContractorService;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,10 +18,20 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.http.MediaType;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.context.SecurityContext;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.User;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
+import java.util.Arrays;
 import java.util.Collections;
+import java.util.List;
 
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
@@ -37,6 +48,21 @@ public class ContractorControllerTest {
     private ContractorService contractorService;
 
     private ObjectMapper objectMapper = new ObjectMapper();
+
+    @BeforeEach
+    void setUp() {
+        String username = "user";
+        List<GrantedAuthority> authorities = Arrays.asList(
+                new SimpleGrantedAuthority("USER"),
+                new SimpleGrantedAuthority("CONTRACTOR_SUPERUSER")
+
+        );
+        UserDetails userDetails = new User(username, "password", authorities);
+        Authentication authentication = new UsernamePasswordAuthenticationToken(userDetails, null, authorities);
+        SecurityContext securityContext = SecurityContextHolder.createEmptyContext();
+        securityContext.setAuthentication(authentication);
+        SecurityContextHolder.setContext(securityContext);
+    }
 
     @Test
     void getAllContractorsReturnListOfContractors() throws Exception {
