@@ -17,12 +17,16 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.PatchMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.RestController;
+
 
 /**
  * Контроллер для работы с контрагентами.
@@ -145,6 +149,21 @@ public class ContractorController {
     @PreAuthorize("hasAnyAuthority(T(com.chiniakin.enums.auth.RoleEnum).CONTRACTOR_SUPERUSER, T(com.chiniakin.enums.auth.RoleEnum).SUPERUSER)")
     public void saveContractor(@RequestBody ContractorModel contractorModel) {
         contractorService.saveContractor(contractorModel);
+    }
+
+    /**
+     * Меняет значение поля activeMainBorrower.
+     *
+     * @param activeMainBorrower новое значение поля.
+     */
+    @Operation(summary = "Изменение значения поля activeMainBorrower у контрагента")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Поле изменено")
+    })
+    @PatchMapping("/main-borrower/{id}")
+    public void setMainBorrower(@Parameter(description = "id контрагента")
+                                @PathVariable String id, @RequestBody Boolean activeMainBorrower) {
+        contractorService.setMainBorrower(id, activeMainBorrower);
     }
 
     /**

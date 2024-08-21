@@ -53,6 +53,10 @@ public class ContractorModel {
     @JsonProperty("org_form")
     private OrgFormResponse orgFormResponse;
 
+    @Schema(description = "статус основного заемщика")
+    @JsonProperty("active_main_borrower")
+    private boolean activeMainBorrower;
+
     @Schema(description = "Активность контрагента")
     @JsonProperty("is_active")
     private boolean isActive;

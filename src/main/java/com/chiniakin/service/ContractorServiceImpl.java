@@ -132,6 +132,11 @@ public class ContractorServiceImpl implements ContractorService {
     }
 
     @Override
+    public void setMainBorrower(String contractorId, boolean activeMainBorrower) {
+        contractorRepository.setActiveMainBorrower(contractorId, activeMainBorrower);
+    }
+
+    @Override
     public void deleteContractorById(String id) {
         contractorRepository.offActiveById(id);
     }
