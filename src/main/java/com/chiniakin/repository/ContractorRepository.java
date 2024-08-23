@@ -2,7 +2,6 @@ package com.chiniakin.repository;
 
 import com.chiniakin.entity.Contractor;
 import com.chiniakin.exception.ContractorNotFoundException;
-import jakarta.transaction.Transactional;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
@@ -10,6 +9,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Optional;
 
@@ -67,17 +67,6 @@ public interface ContractorRepository extends JpaRepository<Contractor, String> 
     default Contractor findByIdOrThrow(String id) {
         return findById(id).orElseThrow(() -> new ContractorNotFoundException("Контрагент с id " + id + " не найден."));
     }
-
-    /**
-     * Меняет значение поля activeMainBorrower.
-     *
-     * @param id идентификатор контрагента.
-     * @param activeMainBorrower статус основного заемщика.
-     */
-    @Modifying
-    @Transactional
-    @Query("update Contractor c set c.activeMainBorrower = :activeMainBorrower where c.id = :id")
-    void setActiveMainBorrower(@Param("id") String id, @Param("activeMainBorrower") boolean activeMainBorrower);
 
     /**
      * Меняет поле isActive для фактического удаления из набора активных Contractor.
