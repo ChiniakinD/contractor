@@ -1,7 +1,7 @@
 package com.chiniakin.service.interfaces;
 
-import com.chiniakin.model.ContractorModel;
 import com.chiniakin.model.ContractorFilter;
+import com.chiniakin.model.ContractorModel;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -64,7 +64,7 @@ public interface ContractorService {
     /**
      * Изменение значения поля activeMainBorrower у контрагента.
      *
-     * @param contractorId id контрагента.
+     * @param contractorId       id контрагента.
      * @param activeMainBorrower новое значение поля activeMainBorrower.
      */
     void setMainBorrower(String contractorId, boolean activeMainBorrower);
